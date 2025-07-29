@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import TaskList from "./pages/TaskList";
+import TaskForm from "./pages/TaskForm";
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/tasks" element={<TaskList />} />
+        {/* Rotas extras para expansão futura */}
+        <Route
+          path="/profile"
+          element={
+            <div className="min-h-screen flex items-center justify-center">
+              Perfil do Usuário
+            </div>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <div className="min-h-screen flex items-center justify-center">
+              Histórico de Ações
+            </div>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <div className="min-h-screen flex items-center justify-center">
+              Configurações
+            </div>
+          }
+        />
+        <Route path="/tasks/new" element={<TaskForm />} />
+        <Route
+          path="/tasks/:id/edit"
+          element={
+            <div className="min-h-screen flex items-center justify-center">
+              Editar Tarefa
+            </div>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

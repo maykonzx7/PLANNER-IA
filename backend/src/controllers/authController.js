@@ -5,11 +5,23 @@ const jwt = require("jsonwebtoken");
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res
+        .status(400)
+        .json({ error: "Todos os campos são obrigatórios." });
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ error: "E-mail já cadastrado." });
+    }
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, passwordHash });
     res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    if (err.code === 11000 || (err.message && err.message.includes('duplicate'))) {
+      return res.status(409).json({ error: "E-mail já cadastrado." });
+    }
+    res.status(500).json({ error: err.message || "Erro ao cadastrar usuário. Tente novamente mais tarde." });
   }
 };
 

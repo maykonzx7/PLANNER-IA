@@ -1,5 +1,11 @@
 // Ponto de entrada do backend
 require("dotenv").config();
+
+if (!process.env.JWT_SECRET) {
+  console.error("❌ FATAL ERROR: JWT_SECRET não está definido no .env");
+  process.exit(1); // Encerra o servidor
+}
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -15,8 +21,8 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Conectado ao MongoDB!"))
-  .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+  .then(() => console.log("✅ Conectado ao MongoDB!"))
+  .catch((err) => console.error("❌ Erro ao conectar ao MongoDB:", err));
 
 // Rota inicial
 app.get("/", (req, res) => {
